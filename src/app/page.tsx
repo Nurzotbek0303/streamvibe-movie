@@ -14,6 +14,9 @@ import plansYear from "@/data/plan_year";
 import instance from "./service/api";
 import Image from "next/image";
 
+
+
+
 interface Movie {
   id: number;
   title: string;

@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const instance = axios.create({
-  baseURL: "https://movie-app-zqxl.onrender.com/",
+  baseURL: "https://movie-app-ea86.onrender.com/",
   // withCredentials: true,  <-- endi keraksiz
 });
 
