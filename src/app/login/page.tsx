@@ -31,7 +31,7 @@ function Login() {
     };
   }, []);
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email || !password) {
       return toast.error("Barcha maydonlarni to'ldiring!");
@@ -70,7 +70,7 @@ function Login() {
         <h1 className="text-lg font-medium text-[#F1F1F3] text-center">
           Login
         </h1>
-        <form className="flex flex-col w-72 gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col w-72 gap-4">
           <label>
             <input
               onChange={(e) => setEmail(e.target.value)}
@@ -90,7 +90,6 @@ function Login() {
 
           <button
             disabled={loading}
-            onClick={handleSubmit}
             type="submit"
             className="w-full bg-[#E50000] py-1.5 px-3 rounded-md text-[#F1F1F3] mt-3"
           >

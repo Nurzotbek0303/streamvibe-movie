@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function Footer() {
   return (
@@ -66,15 +67,25 @@ function Footer() {
           </h1>
           <div className="flex items-center gap-2">
             <div className="border border-[#262626] bg-[#1A1A1A] rounded-lg w-10 h-10 flex items-center justify-center">
-              <img src="/icon/fesbook.png" alt="" className="" />
+              <Image
+                src="/icon/fesbook.png"
+                alt="Facebook"
+                width={24}
+                height={24}
+              />
             </div>
 
             <div className="border border-[#262626] bg-[#1A1A1A] rounded-lg w-10 h-10 flex items-center justify-center">
-              <img src="/icon/twitter.png" alt="" />
+              <Image
+                src="/icon/twitter.png"
+                alt="Twitter"
+                width={24}
+                height={24}
+              />
             </div>
 
             <div className="border border-[#262626] bg-[#1A1A1A] rounded-lg w-10 h-10 flex items-center justify-center">
-              <img src="/icon/in.png" alt="" />
+              <Image src="/icon/in.png" alt="LinkedIn" width={24} height={24} />
             </div>
           </div>
         </div>

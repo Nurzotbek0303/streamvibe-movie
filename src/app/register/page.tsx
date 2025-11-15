@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AuthServise from "../service/auth";
+import AuthServise, { RegisterUser } from "../service/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 function Register() {
   const [name, setName] = useState<string>("");
@@ -32,7 +33,7 @@ function Register() {
     };
   }, []);
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name || !email || !password) {
       return toast.error("Barcha maydonlarni to'ldiring!");
@@ -41,16 +42,15 @@ function Register() {
     try {
       setLoading(true);
 
-      const user = {
+      const user:RegisterUser = {
         full_name: name,
         email: email,
         password: password,
       };
 
       const response = await AuthServise.userRegister(user);
-      toast.success(response.data.message, {
-        position: "top-center",
-      });
+      toast.success(response.data.message, { position: "top-center" });
+
       setTimeout(() => {
         router.push("/login");
       }, 900);
@@ -58,8 +58,12 @@ function Register() {
       setName("");
       setEmail("");
       setPassword("");
-    } catch (err: any) {
-      console.log(err.response?.data || err);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data || err.message);
+      } else {
+        console.log(err);
+      }
     } finally {
       setLoading(false);
     }
@@ -71,7 +75,7 @@ function Register() {
         <h1 className="text-[20px] font-medium text-[#F1F1F3] text-center">
           Register
         </h1>
-        <form className="flex flex-col w-72 gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col w-72 gap-4">
           <label>
             <input
               onChange={(e) => setName(e.target.value)}
@@ -99,7 +103,7 @@ function Register() {
 
           <button
             disabled={loading}
-            onClick={handleSubmit}
+
             type="submit"
             className="w-full bg-[#E50000] py-1.5 px-3 rounded-md text-[#F1F1F3] mt-3"
           >

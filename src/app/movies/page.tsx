@@ -7,6 +7,18 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import instance from "../service/api";
+import Image from "next/image";
+
+
+interface Movie {
+  id: number;
+  title: string;
+  thumbnail_path: string;
+  year: number;
+  view: number;
+  duration?: number;
+  rating?: number;
+}
 
 function MoviesShow() {
   const prevRef = useRef<HTMLButtonElement | null>(null);
@@ -151,8 +163,8 @@ function MoviesShow() {
   }, [movies]);
 
   function Time(time: number, hours: string, minuts: string): string {
-    let hour: number = (time - (time % 60)) / 60;
-    let min: number = time % 60;
+    const hour: number = (time - (time % 60)) / 60;
+    const min: number = time % 60;
     return `${hour}${hours} ${min}${minuts}`;
   }
 
@@ -161,27 +173,29 @@ function MoviesShow() {
       if (view < 1000) {
         return `${view}`;
       } else {
-        let views: number = view / 1000;
+        const views: number = view / 1000;
         return `${views.toFixed(1)}K`;
       }
     } else {
-      let views: number = view / 1000;
+      const views: number = view / 1000;
       return `${views.toFixed(1)}M`;
     }
   }
 
   function generateStars(rating: number) {
-    let stars = [];
+    const stars = [];
     const fullStars: number = Math.floor(rating);
     const hasHalfStar: boolean = rating % 1 >= 0.5;
     const emptyStars: number = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <img
+        <Image
           key={`full-${i}`}
           src="/icon/star_red.svg"
           alt="full"
+          width={12}
+          height={12}
           className="w-3 h-3"
         />
       );
@@ -189,10 +203,12 @@ function MoviesShow() {
 
     if (hasHalfStar) {
       stars.push(
-        <img
+        <Image
           key="half"
           src="/icon/star_gray_red.svg"
           alt="half"
+          width={12}
+          height={12}
           className="w-3 h-3"
         />
       );
@@ -200,10 +216,12 @@ function MoviesShow() {
 
     for (let i = 0; i < emptyStars; i++) {
       stars.push(
-        <img
+        <Image
           key={`empty-${i}`}
           src="/icon/star_gray.svg"
           alt="empty"
+          width={12}
+          height={12}
           className="w-3 h-3"
         />
       );
@@ -226,8 +244,8 @@ function MoviesShow() {
     );
   }
 
-  const [releaseMovie, setReleasesMovie] = useState<any>();
-  const [mustWatchMovie, setMustWatchMovie] = useState<any>();
+  const [releaseMovie, setReleasesMovie] = useState<Movie[]>();
+  const [mustWatchMovie, setMustWatchMovie] = useState<Movie[]>();
   useEffect(() => {
     async function releaseMovie() {
       const req = await instance.get(`film/get_last`);
@@ -253,10 +271,13 @@ function MoviesShow() {
                 key={item.id}
                 className="relative h-screen w-full overflow-hidden"
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
+                  width={1920}
+                  height={1080}
                   className="w-full sm:h-full h-158 object-cover blur-[1px]"
+                  priority
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
@@ -268,7 +289,7 @@ function MoviesShow() {
                   <p className="text-[16px] text-[#999999]">{item.text}</p>
                   <div className="flex items-center gap-10 mt-4">
                     <div className="flex items-center gap-1">
-                      <img src="/icon/imdb.svg" alt="" />
+                      <Image src="/icon/imdb.svg" alt="IMDB" width={25} height={15} />
                       <h1 className="text-2xl text-[#EEBB07] font-semibold">
                         {item.rating}
                         <span className="text-lg text-[#FFFFFF] font-medium">
@@ -277,7 +298,7 @@ function MoviesShow() {
                       </h1>
                     </div>
                     <div className="flex items-center gap-1">
-                      <img src="/icon/time.svg" alt="" />
+                      <Image src="/icon/time.svg" alt="Time" width={20} height={20} />
                       <h2 className="text-[#FFFFFF] text-lg font-semibold">
                         {Time(item.duration, " Hours", " Minute")}
                       </h2>
@@ -303,19 +324,21 @@ function MoviesShow() {
             ref={prevRef}
             className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
           >
-            <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+            <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
           </button>
           <div className="flex gap-[3px]">
             {[0, 1, 2, 3].map((index) => (
-              <img
-                key={index}
-                src={
-                  activeBlocks[0] === index
-                    ? "/icon/line_red.png"
-                    : "/icon/line_gray.png"
-                }
-                alt=""
-              />
+              <Image
+                  width={16}
+                  height={1}
+                  key={index}
+                  src={
+                    activeBlocks[0] === index
+                      ? "/icon/line_red.png"
+                      : "/icon/line_gray.png"
+                  }
+                  alt="pagination indicator"
+                />
             ))}
           </div>
           <button
@@ -323,7 +346,7 @@ function MoviesShow() {
             ref={nextRef}
             className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
           >
-            <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+            <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
           </button>
         </div>
       </section>
@@ -342,18 +365,20 @@ function MoviesShow() {
               ref={prevRef1}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[1] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -362,7 +387,7 @@ function MoviesShow() {
               ref={nextRef1}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -392,9 +417,11 @@ function MoviesShow() {
             return (
               <SwiperSlide key={item.id}>
                 <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                  <img
+                  <Image
                     src={item.image}
-                    alt=""
+                    alt={item.name}
+                    width={300}
+                    height={400}
                     className=" rounded-lg sm:h-[310px] h-64"
                   />
                   <Link href={`/${item.id}`}>
@@ -402,9 +429,11 @@ function MoviesShow() {
                   </Link>
                   <div className="flex items-center justify-between pt-1.5">
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl py-0.5 px-1 ">
-                      <img
+                      <Image
                         src="/icon/Subtract.svg"
-                        alt=""
+                        alt="duration"
+                        width={12}
+                        height={12}
                         className="w-3 h-3"
                       />
                       <h1 className="text-[#999999] text-[12px]">
@@ -412,7 +441,7 @@ function MoviesShow() {
                       </h1>
                     </div>
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl px-1 py-0.5  ">
-                      <img src="/icon/Union.svg" alt="" className="w-3 h-3" />
+                      <Image src="/icon/Union.svg" alt="views" width={12} height={12} className="w-3 h-3" />
                       <h1 className="text-[#999999] text-[12px]">
                         {View(item.view)}
                       </h1>
@@ -439,18 +468,20 @@ function MoviesShow() {
               ref={prevRef2}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[2] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -459,7 +490,7 @@ function MoviesShow() {
               ref={nextRef2}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -486,16 +517,18 @@ function MoviesShow() {
           onInit={(swiper) => setReleases(swiper)}
         >
           {releaseMovie ? (
-            releaseMovie.map((item: any) => {
+            releaseMovie.map((item: Movie) => {
               return (
                 <SwiperSlide key={item.id}>
                   <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                    <img
+                    <Image
                       src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
                         /\\/g,
                         "/"
                       )}`}
-                      alt=""
+                      alt={item.title}
+                      width={300}
+                      height={400}
                       className=" rounded-lg sm:h-[310px] h-64"
                     />
                     <Link href={`/${item.id}`}>
@@ -530,18 +563,20 @@ function MoviesShow() {
               ref={prevRef3}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[3] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -550,7 +585,7 @@ function MoviesShow() {
               ref={nextRef3}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -577,18 +612,20 @@ function MoviesShow() {
           onInit={(swiper) => setWatchMovies(swiper)}
         >
           {mustWatchMovie ? (
-            mustWatchMovie.map((item: any) => {
+            mustWatchMovie.map((item: Movie) => {
               return (
                 <SwiperSlide
                   key={item.id}
                   className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]"
                 >
-                  <img
+                  <Image
                     src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
                       /\\/g,
                       "/"
                     )}`}
-                    alt=""
+                    alt={item.title}
+                    width={300}
+                    height={400}
                     className=" rounded-lg sm:h-[310px] h-64"
                   />
                   <Link href={`/${item.id}`}>
@@ -602,7 +639,7 @@ function MoviesShow() {
                       {item.year}
                     </h1>
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl px-2 py-0.5 w-fit">
-                      <img src="/icon/Union.svg" alt="" className="w-3 h-3" />
+                      <Image src="/icon/Union.svg" alt="views" width={12} height={12} className="w-3 h-3" />
                       <h1 className="text-[#999999] text-[12px]">
                         {View(item.view)}
                       </h1>
@@ -649,9 +686,11 @@ function MoviesShow() {
                 key={item.id}
                 className="relative h-screen w-full overflow-hidden"
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
+                  width={1920}
+                  height={403}
                   className="w-full h-[403px] object-cover blur-[1px]"
                 />
 
@@ -662,7 +701,7 @@ function MoviesShow() {
                   <p className="text-[16px] text-[#999999]">{item.text}</p>
                   <div className="flex items-center gap-10 mt-4">
                     <div className="flex items-center gap-1">
-                      <img src="/icon/imdb.svg" alt="" />
+                      <Image src="/icon/imdb.svg" alt="IMDB" width={25} height={15} />
                       <h1 className="text-2xl text-[#EEBB07] font-semibold">
                         {item.rating}
                         <span className="text-lg text-[#FFFFFF] font-medium">
@@ -671,7 +710,7 @@ function MoviesShow() {
                       </h1>
                     </div>
                     <div className="flex items-center gap-1">
-                      <img src="/icon/time.svg" alt="" />
+                      <Image src="/icon/time.svg" alt="Time" width={20} height={20} />
                       <h2 className="text-[#FFFFFF] text-lg font-semibold">
                         {Time(item.duration, " Hours", " Minute")}
                       </h2>
@@ -697,19 +736,21 @@ function MoviesShow() {
             ref={prevRef7}
             className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
           >
-            <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+            <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
           </button>
           <div className="flex gap-[3px]">
             {[0, 1, 2, 3].map((index) => (
-              <img
-                key={index}
-                src={
-                  activeBlocks[4] === index
-                    ? "/icon/line_red.png"
-                    : "/icon/line_gray.png"
-                }
-                alt=""
-              />
+              <Image
+                  width={16}
+                  height={1}
+                  key={index}
+                  src={
+                    activeBlocks[4] === index
+                      ? "/icon/line_red.png"
+                      : "/icon/line_gray.png"
+                  }
+                  alt="pagination indicator"
+                />
             ))}
           </div>
           <button
@@ -717,7 +758,7 @@ function MoviesShow() {
             ref={nextRef7}
             className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
           >
-            <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+            <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
           </button>
         </div>
       </section>
@@ -736,18 +777,20 @@ function MoviesShow() {
               ref={prevRef4}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[5] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -756,7 +799,7 @@ function MoviesShow() {
               ref={nextRef4}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -786,9 +829,11 @@ function MoviesShow() {
             return (
               <SwiperSlide key={item.id}>
                 <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                  <img
+                  <Image
                     src={item.image}
-                    alt=""
+                    alt={item.name}
+                    width={300}
+                    height={400}
                     className=" rounded-lg sm:h-[310px] h-64"
                   />
                   <Link href={`/${item.id}`}>
@@ -797,9 +842,11 @@ function MoviesShow() {
 
                   <div className="flex items-center justify-between pt-1.5">
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl py-0.5 px-1 ">
-                      <img
+                      <Image
                         src="/icon/Subtract.svg"
-                        alt=""
+                        alt="duration"
+                        width={12}
+                        height={12}
                         className="w-3 h-3"
                       />
                       <h1 className="text-[#999999] text-[12px]">
@@ -807,9 +854,11 @@ function MoviesShow() {
                       </h1>
                     </div>
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl px-1 py-0.5  ">
-                      <img
+                      <Image
                         src="/icon/season.svg"
-                        alt=""
+                        alt="season"
+                        width={14}
+                        height={14}
                         className="w-3.5 h-3.5"
                       />
                       <h1 className="text-[#999999] text-[12px]">
@@ -838,18 +887,20 @@ function MoviesShow() {
               ref={prevRef5}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[6] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -858,7 +909,7 @@ function MoviesShow() {
               ref={nextRef5}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -888,9 +939,11 @@ function MoviesShow() {
             return (
               <SwiperSlide key={item.id}>
                 <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                  <img
+                  <Image
                     src={item.image}
-                    alt=""
+                    alt={item.name}
+                    width={300}
+                    height={400}
                     className=" rounded-lg sm:h-[310px] h-64"
                   />
                   <Link href={`/${item.id}`}>
@@ -898,9 +951,11 @@ function MoviesShow() {
                   </Link>
                   <div className="flex items-center justify-between pt-1.5">
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl py-0.5 px-1 ">
-                      <img
+                      <Image
                         src="/icon/Subtract.svg"
-                        alt=""
+                        alt="duration"
+                        width={12}
+                        height={12}
                         className="w-3 h-3"
                       />
                       <h1 className="text-[#999999] text-[12px]">
@@ -908,9 +963,11 @@ function MoviesShow() {
                       </h1>
                     </div>
                     <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl px-1 py-0.5  ">
-                      <img
+                      <Image
                         src="/icon/season.svg"
-                        alt=""
+                        alt="season"
+                        width={14}
+                        height={14}
                         className="w-3.5 h-3.5"
                       />
                       <h1 className="text-[#999999] text-[12px]">
@@ -939,18 +996,20 @@ function MoviesShow() {
               ref={prevRef6}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     activeBlocks[7] === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -959,7 +1018,7 @@ function MoviesShow() {
               ref={nextRef6}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -991,9 +1050,11 @@ function MoviesShow() {
                 key={item.id}
                 className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]"
               >
-                <img
+                <Image
                   src={item.image}
-                  alt=""
+                  alt={item.name}
+                  width={300}
+                  height={400}
                   className=" rounded-lg sm:h-[310px] h-64"
                 />
                 <Link href={`/${item.id}`}>
@@ -1002,7 +1063,7 @@ function MoviesShow() {
 
                 <div className="flex items-center justify-between pt-1.5">
                   <div className="flex items-center gap-0.5 border border-[#262626] bg-[#141414] rounded-3xl px-1.5 py-0.5">
-                    <img src="/icon/Subtract.svg" alt="" className="w-3 h-3" />
+                    <Image src="/icon/Subtract.svg" alt="duration" width={12} height={12} className="w-3 h-3" />
                     <h1 className="text-[#999999] text-[12px]">
                       {Time(item.duration, "h", "m")}
                     </h1>

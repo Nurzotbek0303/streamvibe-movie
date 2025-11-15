@@ -12,6 +12,14 @@ import plans from "@/data/plans";
 import data from "@/data/data";
 import plansYear from "@/data/plan_year";
 import instance from "./service/api";
+import Image from "next/image";
+
+interface Movie {
+  id: number;
+  title: string;
+  year: number;
+  thumbnail_path: string;
+}
 
 function Home() {
   const prevRef = useRef<HTMLButtonElement | null>(null);
@@ -57,7 +65,7 @@ function Home() {
     setActive((prev) => (prev > 0 ? prev - 1 : prev));
   }
 
-  const [movie, setMovie] = useState<any>();
+  const [movie, setMovie] = useState<Movie[] | null>(null);
   useEffect(() => {
     async function movieData() {
       try {
@@ -85,9 +93,11 @@ function Home() {
             >
               {posters.map((item, id) => (
                 <div key={id}>
-                  <img
+                  <Image
                     src={item}
-                    alt=""
+                    alt="movie poster"
+                    width={154}
+                    height={210}
                     className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
@@ -104,9 +114,11 @@ function Home() {
             >
               {posters.map((item, id) => (
                 <div key={id}>
-                  <img
+                  <Image
                     src={item}
-                    alt=""
+                    alt="movie poster"
+                    width={154}
+                    height={210}
                     className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
@@ -123,9 +135,11 @@ function Home() {
             >
               {posters.map((item, id) => (
                 <div key={id}>
-                  <img
+                  <Image
                     src={item}
-                    alt=""
+                    alt="movie poster"
+                    width={154}
+                    height={210}
                     className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
@@ -142,9 +156,11 @@ function Home() {
             >
               {posters.map((item, id) => (
                 <div key={id}>
-                  <img
+                  <Image
                     src={item}
-                    alt=""
+                    alt="movie poster"
+                    width={154}
+                    height={210}
                     className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
@@ -154,9 +170,11 @@ function Home() {
         </div>
 
         <div className="absolute inset-0 flex items-center sm:justify-center flex-col mt-14">
-          <img
+          <Image
             src="/image/music.png"
-            alt=""
+            alt="music icon"
+            width={240}
+            height={240}
             className="w-40 h-40 sm:w-60 sm:h-60 sm:mt-0 mt-24 2xl:mt-30 2xl:h-70 2xl:w-70"
           />
           <h1 className="sm:mt-8 mt-24 2xl:mt-32 text-2xl sm:text-5xl 2xl:text-6xl text-[#FFFFFF] font-bold text-center sm:px-0 px-4 ">
@@ -184,7 +202,7 @@ function Home() {
               Explore our wide variety of categories
             </h1>
             <p className="text-sm text-[#999999] 2xl:text-[16px] pt-2.5">
-              Whether you're looking for a comedy to make you laugh, a drama to
+              Whether you are looking for a comedy to make you laugh, a drama to
               make you think, or a documentary to learn something new
             </p>
           </div>
@@ -195,18 +213,20 @@ function Home() {
               ref={prevRef}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 mr-3"
             >
-              <img src="/icon/left.svg" alt="left" className="w-6 h-6" />
+              <Image src="/icon/left.svg" alt="left" width={24} height={24} className="w-6 h-6" />
             </button>
             <div className="flex gap-[3px]">
               {[0, 1, 2, 3].map((index) => (
-                <img
+                <Image
+                  width={16}
+                  height={1}
                   key={index}
                   src={
                     active === index
                       ? "/icon/line_red.png"
                       : "/icon/line_gray.png"
                   }
-                  alt=""
+                  alt="pagination indicator"
                 />
               ))}
             </div>
@@ -215,7 +235,7 @@ function Home() {
               ref={nextRef}
               className="border border-[#1F1F1F] rounded-md bg-[#1A1A1A] p-1.5 ml-3"
             >
-              <img src="/icon/right.svg" alt="right" className="w-6 h-6" />
+              <Image src="/icon/right.svg" alt="right" width={24} height={24} className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -242,18 +262,21 @@ function Home() {
             onInit={(swiper) => setSwiperInstance(swiper)}
           >
             {movie ? (
-              movie.map((item: any) => {
+              movie.map((item: Movie) => {
                 return (
                   <SwiperSlide key={item.id}>
                     <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                      <img
+                      <Image
                         src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
-                          /\\/g,
-                          "/"
-                        )}`}
-                        alt=""
-                        className=" rounded-lg sm:h-[340px] h-72"
+                        /\\/g,
+                        "/"
+                      )}`}
+                        alt={item.title}
+                        width={200}
+                        height={300}
+                        className="rounded-lg sm:h-[340px] h-72"
                       />
+
                       <Link href={`/${item.id}`}>
                         <h1 className="text-[16px] mt-0.5 truncate">
                           {item.title}
@@ -267,7 +290,7 @@ function Home() {
               })
             ) : (
               <div>
-                <h1>Loding...</h1>
+                <h1>Loading...</h1>
               </div>
             )}
           </Swiper>
@@ -299,7 +322,7 @@ function Home() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 border border-[#1F1F1F] bg-[#141414] rounded-[10px] flex justify-center items-center">
-                      <img src={item.icon} alt="" />
+                      <Image src={item.icon} alt={item.title} width={24} height={24} />
                     </div>
 
                     <h1 className="text-[20px] text-[#FFFFFF] font-semibold">
@@ -321,7 +344,7 @@ function Home() {
               Frequently Asked Questions
             </h1>
             <p className="text-[#999999] text-[16px] pt-2.5">
-              Got questions? We've got answers! Check out our FAQ section to
+              Got questions? We&apos;re got answers! Check out our FAQ section to
               find answers to the most common questions about StreamVibe.
             </p>
           </div>
@@ -372,7 +395,7 @@ function Home() {
         <div className="flex justify-between items-end sm:flex-nowrap flex-wrap">
           <div>
             <h1 className="sm:text-3xl text-2xl text-[#FFFFFF] font-bold">
-              Choose the plan that's right for you
+              Choose the plan that&apos;s right for you
             </h1>
             <p className="text-[#999999] text-[16px] sm:mr-80 mr-0 pt-2.5">
               Join StreamVibe and select from our flexible subscription options
@@ -385,21 +408,19 @@ function Home() {
             <ul className="border border-[#262626] rounded-lg bg-[#0F0F0F] flex items-center py-1 px-3 transition-all sm:mt-0 mt-4">
               <li
                 onClick={() => setPlan(!plan)}
-                className={`${
-                  plan
+                className={`${plan
                     ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
                     : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
-                } `}
+                  } `}
               >
                 Monthly
               </li>
               <li
                 onClick={() => setPlan(!plan)}
-                className={`${
-                  !plan
+                className={`${!plan
                     ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
                     : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
-                } `}
+                  } `}
               >
                 Yearly
               </li>

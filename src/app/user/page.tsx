@@ -2,8 +2,15 @@
 import React, { useEffect, useState } from "react";
 import instance from "../service/api";
 
+interface UserData {
+  id: number;
+  full_name: string;
+  email: string;
+}
+
+
 export function User() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserData|null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {

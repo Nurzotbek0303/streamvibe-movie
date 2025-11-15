@@ -7,6 +7,82 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import instance from "../service/api";
+import Image from "next/image";
+
+interface MovieData {
+  title: string;
+  description: string;
+  video_url: string;
+  year: number;
+  languages: string[];
+  genres: string[];
+}
+
+interface Review {
+  id: number;
+  name: string;
+  countriy: string;
+  text: string;
+  rating: number;
+}
+
+interface Rating {
+  id: number;
+  name: string;
+  rating: number;
+}
+
+const actiors_image = [
+  { id: 1, image: "/image/actior_1.png" },
+  { id: 2, image: "/image/actior_2.png" },
+  { id: 3, image: "/image/actior_3.png" },
+  { id: 4, image: "/image/actior_4.png" },
+  { id: 5, image: "/image/actior_1.png" },
+  { id: 6, image: "/image/actior_2.png" },
+  { id: 7, image: "/image/actior_3.png" },
+  { id: 8, image: "/image/actior_4.png" },
+  { id: 9, image: "/image/actior_1.png" },
+  { id: 10, image: "/image/actior_2.png" },
+  { id: 11, image: "/image/actior_1.png" },
+  { id: 12, image: "/image/actior_2.png" },
+  
+];
+
+const review_movie: Review[] = [
+  {
+    id: 1,
+    name: "Aniket Roy",
+    countriy: "India",
+    text: "This movie was recommended to me by a very dear friend...",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    name: "Swaraj",
+    countriy: "India",
+    text: "A restless king promises his lands to the local tribals...",
+    rating: 4,
+  },
+    {
+    id: 3,
+    name: "Aniket Roy",
+    countriy: "India",
+    text: "This movie was recommended to me by a very dear friend...",
+    rating: 4.5,
+  },
+  {
+    id: 4,
+    name: "Swaraj",
+    countriy: "India",
+    text: "A restless king promises his lands to the local tribals...",
+    rating: 4,
+  },
+];
+
+const rating: Rating[] = [
+  { id: 1, name: "IMDb", rating: 4.5 },
+  { id: 2, name: "Streamvibe", rating: 4 },
+];
 
 function MoviesId() {
   const prevRef = useRef<HTMLButtonElement | null>(null);
@@ -49,40 +125,43 @@ function MoviesId() {
   }, [review]);
 
   function generateStars(rating: number) {
-    let stars = [];
+    const stars = [];
     const fullStars: number = Math.floor(rating);
     const hasHalfStar: boolean = rating % 1 >= 0.5;
     const emptyStars: number = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <img
+        <Image
           key={`full-${i}`}
           src="/icon/star_red.svg"
-          alt="full"
-          className="w-3 h-3"
+          alt="full star"
+          width={12}
+          height={12}
         />
       );
     }
 
     if (hasHalfStar) {
       stars.push(
-        <img
+        <Image
           key="half"
           src="/icon/star_gray_red.svg"
-          alt="half"
-          className="w-3 h-3"
+          alt="half star"
+          width={12}
+          height={12}
         />
       );
     }
 
     for (let i = 0; i < emptyStars; i++) {
       stars.push(
-        <img
+        <Image
           key={`empty-${i}`}
           src="/icon/star_gray.svg"
-          alt="empty"
-          className="w-3 h-3"
+          alt="empty star"
+          width={12}
+          height={12}
         />
       );
     }
@@ -99,7 +178,7 @@ function MoviesId() {
   }
 
   const { movieId } = useParams();
-  const [movieData, setMovieData] = useState<any>();
+  const [movieData, setMovieData] = useState<MovieData | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -108,7 +187,7 @@ function MoviesId() {
       setMovieData(req.data);
     }
     MoviId();
-  }, []);
+  }, [movieId]);
 
   const getYouTubeEmbedUrl = (url: string, autoplay: boolean = false) => {
     let videoId = "";
@@ -119,10 +198,10 @@ function MoviesId() {
       videoId = url.split("watch?v=")[1].split("&")[0];
     }
 
-    return `https://www.youtube.com/embed/${videoId}${
-      autoplay ? "?autoplay=1" : ""
-    }`;
+    return `https://www.youtube.com/embed/${videoId}${autoplay ? "?autoplay=1" : ""
+      }`;
   };
+
   return (
     <div>
       <section className="relative">
@@ -132,9 +211,8 @@ function MoviesId() {
               src={getYouTubeEmbedUrl(movieData.video_url, isPlaying)}
               allowFullScreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              className={`h-screen w-full sm:px-20 2xl:px-40 px-4 pt-20 2xl:pt-30 pb-1 ${
-                isPlaying ? "" : "brightness-50 blur-[1px]"
-              }`}
+              className={`h-screen w-full sm:px-20 2xl:px-40 px-4 pt-20 2xl:pt-30 pb-1 ${isPlaying ? "" : "brightness-50 blur-[1px]"
+                }`}
             ></iframe>
 
             {!isPlaying && (
@@ -157,7 +235,7 @@ function MoviesId() {
                   >
                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                   </svg>
-                  Ko'rish
+                  Ko&apos;rish
                 </button>
               </div>
             )}
@@ -184,13 +262,13 @@ function MoviesId() {
                   ref={prevRef}
                   className=" border border-[#262626] rounded-[50%] p-1 bg-[#141414]"
                 >
-                  <img src="/icon/left.svg" alt="" />
+                  <Image src="/icon/left.svg" alt="previous" width={20} height={20} />
                 </button>
                 <button
                   ref={nextRef}
                   className=" border border-[#262626] rounded-[50%] p-1 bg-[#141414]"
                 >
-                  <img src="/icon/right.svg" alt="" />
+                  <Image src="/icon/right.svg" alt="next" width={20} height={20} />
                 </button>
               </div>
             </div>
@@ -219,10 +297,12 @@ function MoviesId() {
               {actiors_image.map((item) => {
                 return (
                   <SwiperSlide key={item.id}>
-                    <img
+                    <Image
                       src={item.image}
-                      alt=""
-                      className="w-22 h-22 2xl:w-26 2xl:h-24 rounded-xl"
+                      alt="actor"
+                      width={100}
+                      height={90}
+                      className="rounded-xl h-22"
                     />
                   </SwiperSlide>
                 );
@@ -237,7 +317,7 @@ function MoviesId() {
                 onClick={() => setOpenReviews(!openReviews)}
                 className="border border-[#262626] bg-[#141414] rounded-lg flex items-center gap-1 py-2 px-3"
               >
-                <img src="/icon/plus.svg" alt="" className="w-5 h-5" />
+                <Image src="/icon/plus.svg" alt="add" className="w-5 h-5" width={20} height={20} />
                 <h1 className="text-[#FFFFFF] text-sm">Add Your Review</h1>
               </button>
             </div>
@@ -293,29 +373,31 @@ function MoviesId() {
                 <button
                   onClick={handlePrev}
                   ref={prevRef1}
-                  className=" border border-[#262626] rounded-[50%] p-1 bg-[#141414] mr-2"
+                  className=" border border-[#262626] rounded-[50%] p-1.5 bg-[#141414] mr-2"
                 >
-                  <img src="/icon/left.svg" alt="" />
+                  <Image src="/icon/left.svg" alt="previous" width={20} height={20} />
                 </button>
                 <div className="flex items-center gap-[3px]">
                   {[0, 1, 2, 3].map((index) => (
-                    <img
+                    <Image
+                      width={16}
+                      height={1}
                       key={index}
                       src={
                         active === index
                           ? "/icon/line_red.png"
                           : "/icon/line_gray.png"
                       }
-                      alt=""
+                      alt="pagination indicator"
                     />
                   ))}
                 </div>
                 <button
                   onClick={handleNext}
                   ref={nextRef1}
-                  className=" border border-[#262626] rounded-[50%] p-1 bg-[#141414] ml-2"
+                  className=" border border-[#262626] rounded-[50%] p-1.5 bg-[#141414] ml-2"
                 >
-                  <img src="/icon/right.svg" alt="" />
+                  <Image src="/icon/right.svg" alt="next" width={20} height={20} />
                 </button>
               </div>
             </div>
@@ -324,22 +406,22 @@ function MoviesId() {
 
         <div className="border border-[#262626] bg-[#1A1A1A] rounded-lg sm:p-8 p-6 sm:col-span-1 col-span-2 h-fit">
           <div className="flex items-center gap-1">
-            <img src="/icon/icon_1.svg" alt="" />
+            <Image src="/icon/icon_1.svg" alt="year icon" width={20} height={20} />
             <h1 className="text-[#999999] text-[16px]">Released Year</h1>
           </div>
           <h1 className="text-[#FFFFFF] text-[16px] pt-2.5">
             {movieData && movieData.year}
           </h1>
           <div className="flex items-center gap-1 pt-7">
-            <img src="/icon/icon_2.svg" alt="" />
+            <Image src="/icon/icon_2.svg" alt="language icon" width={20} height={20} />
             <h1 className="text-[#999999] text-[16px]">Available Languages</h1>
           </div>
           <div className="flex flex-wrap gap-2 pt-2.5">
             {movieData &&
-              movieData.languages.sort().map((item: any) => {
+              movieData.languages.sort().map((item: string, index: number) => {
                 return (
                   <div
-                    key={item.id}
+                    key={`lang-${index}`}
                     className="border border-[#262626] rounded-lg bg-[#141414] py-1.5 px-2.5"
                   >
                     <button className="text-[#FFFFFF] text-sm">{item}</button>
@@ -348,7 +430,7 @@ function MoviesId() {
               })}
           </div>
           <div className="flex items-center gap-1 pt-7">
-            <img src="/icon/icon_3.svg" alt="" />
+            <Image src="/icon/icon_3.svg" alt="rating icon" width={20} height={20} />
             <h1 className="text-[#999999] text-[16px]">Ratings</h1>
           </div>
           <div className="flex gap-4 pt-2.5 ">
@@ -371,15 +453,15 @@ function MoviesId() {
           </div>
 
           <div className="flex  items-center gap-1 pt-7">
-            <img src="/icon/icon_4.svg" alt="" />
-            <h1 className="text-[#999999] text-[16px]">Gernes</h1>
+            <Image src="/icon/icon_4.svg" alt="genre icon" width={20} height={20} />
+            <h1 className="text-[#999999] text-[16px]">Genres</h1>
           </div>
 
           <div className="flex flex-wrap gap-2 pt-2">
             {movieData &&
-              movieData.genres.sort().map((item: any) => {
+              movieData.genres.sort().map((item: string, index: number) => {
                 return (
-                  <div className="border border-[#262626] rounded-lg bg-[#141414] py-1.5 px-2.5 ">
+                  <div key={`genre-${index}`} className="border border-[#262626] rounded-lg bg-[#141414] py-1.5 px-2.5 ">
                     <button className="text-[#FFFFFF] text-sm">{item}</button>
                   </div>
                 );
@@ -390,10 +472,12 @@ function MoviesId() {
             <h1 className="text-[#999999] text-[16px]">Director</h1>
           </div>
           <div className="border border-[#262626] rounded-lg bg-[#141414] p-2 flex gap-2 items-center mt-1">
-            <img
+            <Image
               src="/image/actior_1.png"
-              alt=""
+              alt="director"
               className="w-10 h-10 rounded-lg"
+              width={40}
+              height={40}
             />
             <div>
               <h1 className="text-[#FFFFFF] text-[16px]">Rishab Shetty</h1>
@@ -405,10 +489,12 @@ function MoviesId() {
             <h1 className="text-[#999999] text-[16px]">Music</h1>
           </div>
           <div className="border border-[#262626] rounded-lg bg-[#141414] p-2 flex gap-2 items-center mt-1">
-            <img
+            <Image
               src="/image/actior_1.png"
-              alt=""
+              alt="music composer"
               className="w-10 h-10 rounded-lg"
+              width={40}
+              height={40}
             />
             <div>
               <h1 className="text-[#FFFFFF] text-[16px]">Rishab Shetty</h1>
@@ -461,8 +547,9 @@ function MoviesId() {
                     Add Review
                   </button>
                   <button
-                    onClick={() => setOpenReviews(!open)}
+                    onClick={() => setOpenReviews(!openReviews)}
                     className="w-full bg-[#262626] py-1.5 px-3 rounded-md text-[#F1F1F3] mt-3"
+                    type="button"
                   >
                     Cancel
                   </button>
@@ -502,105 +589,3 @@ function MoviesId() {
 }
 
 export default MoviesId;
-
-const actiors_image = [
-  {
-    id: 1,
-    image: "/image/actior_1.png",
-  },
-  {
-    id: 2,
-    image: "/image/actior_2.png",
-  },
-  {
-    id: 3,
-    image: "/image/actior_3.png",
-  },
-  {
-    id: 4,
-    image: "/image/actior_4.png",
-  },
-  {
-    id: 5,
-    image: "/image/actior_5.png",
-  },
-  {
-    id: 6,
-    image: "/image/actior_6.png",
-  },
-  {
-    id: 7,
-    image: "/image/actior_1.png",
-  },
-  {
-    id: 8,
-    image: "/image/actior_2.png",
-  },
-  {
-    id: 9,
-    image: "/image/actior_3.png",
-  },
-  {
-    id: 10,
-    image: "/image/actior_4.png",
-  },
-  {
-    id: 11,
-    image: "/image/actior_5.png",
-  },
-  {
-    id: 12,
-    image: "/image/actior_6.png",
-  },
-];
-
-const review_movie = [
-  {
-    id: 1,
-    name: "Aniket Roy",
-    countriy: "India",
-    text: "This movie was recommended to me by a very dear friend who went for the movie by herself. I went to the cinemas to watch but had a houseful board so couldn’t watch it.",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Swaraj",
-    countriy: "India",
-    text: "A restless king promises his lands to the local tribals in exchange of a stone (Panjurli, a deity of Keradi Village) wherein he finds solace and peace of mind.",
-    rating: 4,
-  },
-  {
-    id: 3,
-    name: "Aniket Roy",
-    countriy: "India",
-    text: "This movie was recommended to me by a very dear friend who went for the movie by herself. I went to the cinemas to watch but had a houseful board so couldn’t watch it.",
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: "Aniket Roy",
-    countriy: "India",
-    text: "A restless king promises his lands to the local tribals in exchange of a stone (Panjurli, a deity of Keradi Village) wherein he finds solace and peace of mind.",
-    rating: 5,
-  },
-  {
-    id: 5,
-    name: "Aniket Roy",
-    countriy: "India",
-    text: "This movie was recommended to me by a very dear friend who went for the movie by herself. I went to the cinemas to watch but had a houseful board so couldn’t watch it.",
-    rating: 4.5,
-  },
-];
-
-const rating = [
-  {
-    id: 1,
-    name: "IMDb",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Streamvibe",
-    rating: 4,
-  },
-];

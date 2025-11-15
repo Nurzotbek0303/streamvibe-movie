@@ -16,7 +16,7 @@ function Subscription() {
         <div className="flex justify-between items-end sm:flex-nowrap flex-wrap">
           <div>
             <h1 className="sm:text-3xl text-2xl text-[#FFFFFF] font-bold">
-              Choose the plan that's right for you
+              Choose the plan that&apos;s right for you
             </h1>
             <p className="text-[#999999] text-[16px] sm:mr-80 mr-0 pt-2.5">
               Join StreamVibe and select from our flexible subscription options
@@ -131,7 +131,7 @@ function Subscription() {
             <p className="text-sm text-[#999999] pt-2.5">
               StreamVibe offers three different plans to fit your needs: Basic,
               Standard, and Premium. Compare the features of each plan and
-              choose the one that's right for you.
+              choose the one that&apos;s right for you.
             </p>
           </div>
         </div>

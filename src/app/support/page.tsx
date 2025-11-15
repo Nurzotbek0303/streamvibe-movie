@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import ask_question from "@/data/movie_question";
 
 function Support() {
@@ -20,13 +21,15 @@ function Support() {
             Welcome to our support page!
           </h1>
           <p className="text-[#999999] text-[16px] pt-3.5 sm:w-[480px] w-full ">
-            We're here to help you with any problems you may be having with our
+            We&apos;re here to help you with any problems you may be having with our
             product.
           </p>
-          <img
+          <Image
             src="/image/image_2.png"
-            alt=""
+            alt="support illustration"
             className="pt-8 sm:w-[540px] sm:h-[410px] w-[410px] h-[360px]"
+            width={540}
+            height={410}
           />
         </div>
 
@@ -75,7 +78,7 @@ function Support() {
             <span className="text-[#FFFFFF] text-sm">Message</span>
             <textarea
               placeholder="Enter your Message"
-              className="pb-28 text-white border border-[#262626] rounded-md  placeholder:text-sm p-4 mt-2 w-full h-[150px] resize-none"
+              className="pb-28 text-white border border-[#262626] rounded-md placeholder:text-sm p-4 mt-2 w-full h-[150px] resize-none bg-[#141414]"
             ></textarea>
           </div>
 
@@ -101,7 +104,7 @@ function Support() {
               Frequently Asked Questions
             </h1>
             <p className="text-[#999999] text-[16px] pt-2.5">
-              Got questions? We've got answers! Check out our FAQ section to
+              Got questions? We&apos;ve got answers! Check out our FAQ section to
               find answers to the most common questions about StreamVibe.
             </p>
           </div>

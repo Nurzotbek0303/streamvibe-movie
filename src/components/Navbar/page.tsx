@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 function Navbar() {
@@ -11,10 +12,12 @@ function Navbar() {
       <div className="sm:flex hidden justify-between items-center">
         <Link href="/">
           <div className="flex gap-1 items-center select-none cursor-pointer">
-            <img
+            <Image
               src="/icon/logo.svg"
               alt="Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12"
+              width={48}
+              height={48}
+              className="sm:w-12 sm:h-12"
             />
             <h1 className="font-extrabold text-[#FFFFFF] text-[18px] sm:text-2xl">
               Stream Vibe
@@ -78,11 +81,11 @@ function Navbar() {
 
         <div className="gap-3 items-center select-none sm:flex hidden">
           <Link href="/search">
-            <img src="/icon/search.svg" alt="Search" className="w-6 h-6" />
+            <Image src="/icon/search.svg" alt="Search" width={24} height={24} />
           </Link>
 
           <Link href={"/user"}>
-            <img src="/icon/sign_in.svg" alt="Icon" className="w-8 h-8" />
+            <Image src="/icon/sign_in.svg" alt="Icon" width={32} height={32} />
           </Link>
         </div>
       </div>
@@ -90,7 +93,7 @@ function Navbar() {
       <div className="flex sm:hidden items-center justify-between">
         <Link href="/">
           <div className="flex gap-1 items-center select-none cursor-pointer">
-            <img src="/icon/logo.svg" alt="Logo" className="w-10 h-10" />
+            <Image src="/icon/logo.svg" alt="Logo" width={40} height={40} />
             <h1 className="font-extrabold text-[#FFFFFF] text-[18px]">
               Stream Vibe
             </h1>
@@ -98,7 +101,7 @@ function Navbar() {
         </Link>
 
         <div className="p-1.5 rounded-lg border-2 border-[#262626] bg-[#1A1A1A]">
-          <img src="/icon/menu.svg" alt="Menu" />
+          <Image src="/icon/menu.svg" alt="Menu" width={24} height={24} />
         </div>
       </div>
     </nav>

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function Search() {
   const [search, setSearch] = useState<string>("");
@@ -72,11 +73,14 @@ function Search() {
               return (
                 <div key={item.id} className="">
                   <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
-                    <img
+                    <Image
                       src={item.image}
-                      alt=""
-                      className=" rounded-lg sm:h-[330px] h-72"
+                      alt={item.name}
+                      width={300}
+                      height={450}
+                      className="rounded-lg sm:h-[330px] h-72 object-cover"
                     />
+
                     <Link href={`/${item.id}`}>
                       <h1 className="text-[16px] mt-0.5 truncate">
                         {item.name}
