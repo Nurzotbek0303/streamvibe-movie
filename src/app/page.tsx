@@ -14,9 +14,6 @@ import plansYear from "@/data/plan_year";
 import instance from "./service/api";
 import Image from "next/image";
 
-
-
-
 interface Movie {
   id: number;
   title: string;
@@ -87,7 +84,7 @@ function Home() {
     <div>
       <section className="relative w-full sm:h-screen h-16/9 overflow-hidden select-none">
         <div className="flex flex-col gap-1.5 w-full filter blur-[1px] brightness-50">
-          <div className="sm:h-[195px] h-[210px] 2xl:h-56 bg-black overflow-hidden flex items-center">
+          <div className="h-[220px] 2xl:h-56 bg-black overflow-hidden flex items-center">
             <Marquee
               speed={30}
               gradient={false}
@@ -101,14 +98,14 @@ function Home() {
                     alt="movie poster"
                     width={154}
                     height={210}
-                    className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
+                    className="w-[154px] sm:h-[225px] h-[250px] 2xl:h-[270px] object-cover mx-0.5"
                   />
                 </div>
               ))}
             </Marquee>
           </div>
 
-          <div className="sm:h-[195px] h-[210px] 2xl:h-56 bg-black overflow-hidden flex items-center">
+          <div className="sm:h-[205px] h-[210px] 2xl:h-56 bg-black overflow-hidden flex items-center">
             <Marquee
               speed={30}
               gradient={false}
@@ -122,14 +119,14 @@ function Home() {
                     alt="movie poster"
                     width={154}
                     height={210}
-                    className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
+                    className="w-[154px] sm:h-[225px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
               ))}
             </Marquee>
           </div>
 
-          <div className="sm:h-[195px] h-[210px] 2xl:h-56 bg-black overflow-hidden flex items-center ">
+          <div className="sm:h-[205px] h-[210px] 2xl:h-56 bg-black overflow-hidden flex items-center ">
             <Marquee
               speed={30}
               gradient={false}
@@ -143,14 +140,14 @@ function Home() {
                     alt="movie poster"
                     width={154}
                     height={210}
-                    className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
+                    className="w-[154px] sm:h-[225px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
               ))}
             </Marquee>
           </div>
 
-          <div className="sm:h-[195px] h-[210px] 2xl:h-56 bg-black overflow-hidden 2xl:flex hidden items-center">
+          <div className="sm:h-[205px] h-[210px] 2xl:h-56 bg-black overflow-hidden 2xl:flex hidden items-center">
             <Marquee
               speed={30}
               gradient={false}
@@ -164,7 +161,7 @@ function Home() {
                     alt="movie poster"
                     width={154}
                     height={210}
-                    className="w-[154px] sm:h-[210px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
+                    className="w-[154px] sm:h-[220px] h-[250px] 2xl:h-[270px] object-cover rounded-xl mx-0.5"
                   />
                 </div>
               ))}
@@ -270,10 +267,10 @@ function Home() {
                   <SwiperSlide key={item.id}>
                     <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
                       <Image
-                        src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
+                        src={`https://movie-app-ea86.onrender.com/${item.thumbnail_path.replace(
+                          /\\/g,
+                          "/"
+                        )}`}
                         alt={item.title}
                         width={200}
                         height={300}
@@ -412,8 +409,8 @@ function Home() {
               <li
                 onClick={() => setPlan(!plan)}
                 className={`${plan
-                    ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
-                    : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
+                  ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
+                  : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
                   } `}
               >
                 Monthly
@@ -421,8 +418,8 @@ function Home() {
               <li
                 onClick={() => setPlan(!plan)}
                 className={`${!plan
-                    ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
-                    : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
+                  ? "bg-[#1A1A1A] rounded-lg text-[#FFFFFF] duration-100 px-4.5 py-2 opacity-100 scale-105"
+                  : " text-[#BFBFBF] px-5 py-2.5 opacity-70 scale-100 cursor-pointer"
                   } `}
               >
                 Yearly

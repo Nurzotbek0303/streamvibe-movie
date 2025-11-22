@@ -3,14 +3,13 @@ import toast from "react-hot-toast";
 
 const instance = axios.create({
   baseURL: "https://movie-app-ea86.onrender.com/",
-  // withCredentials: true,  <-- endi keraksiz
 });
 
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
     if (token && config.headers) {
-      config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`; // JSON.parse qo'shildi
+      config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`;
     }
     return config;
   },
@@ -26,7 +25,6 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Endi refresh token frontenddan yuboriladi
         const refreshToken = JSON.parse(
           localStorage.getItem("refresh_token") || "null"
         );

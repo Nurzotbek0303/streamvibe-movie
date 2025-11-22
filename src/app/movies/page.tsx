@@ -329,16 +329,16 @@ function MoviesShow() {
           <div className="flex gap-[3px]">
             {[0, 1, 2, 3].map((index) => (
               <Image
-                  width={16}
-                  height={1}
-                  key={index}
-                  src={
-                    activeBlocks[0] === index
-                      ? "/icon/line_red.png"
-                      : "/icon/line_gray.png"
-                  }
-                  alt="pagination indicator"
-                />
+                width={16}
+                height={1}
+                key={index}
+                src={
+                  activeBlocks[0] === index
+                    ? "/icon/line_red.png"
+                    : "/icon/line_gray.png"
+                }
+                alt="pagination indicator"
+              />
             ))}
           </div>
           <button
@@ -522,7 +522,7 @@ function MoviesShow() {
                 <SwiperSlide key={item.id}>
                   <div className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]">
                     <Image
-                      src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
+                      src={`https://movie-app-ea86.onrender.com/${item.thumbnail_path.replace(
                         /\\/g,
                         "/"
                       )}`}
@@ -619,7 +619,7 @@ function MoviesShow() {
                   className="border border-[#1F1F1F] rounded-xl p-1 bg-[#1A1A1A]"
                 >
                   <Image
-                    src={`http://127.0.0.1:8000/${item.thumbnail_path.replace(
+                    src={`https://movie-app-ea86.onrender.com/${item.thumbnail_path.replace(
                       /\\/g,
                       "/"
                     )}`}
@@ -741,16 +741,16 @@ function MoviesShow() {
           <div className="flex gap-[3px]">
             {[0, 1, 2, 3].map((index) => (
               <Image
-                  width={16}
-                  height={1}
-                  key={index}
-                  src={
-                    activeBlocks[4] === index
-                      ? "/icon/line_red.png"
-                      : "/icon/line_gray.png"
-                  }
-                  alt="pagination indicator"
-                />
+                width={16}
+                height={1}
+                key={index}
+                src={
+                  activeBlocks[4] === index
+                    ? "/icon/line_red.png"
+                    : "/icon/line_gray.png"
+                }
+                alt="pagination indicator"
+              />
             ))}
           </div>
           <button
